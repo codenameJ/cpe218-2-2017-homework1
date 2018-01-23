@@ -6,8 +6,8 @@ public class Node
 
     Node(Node l,char item,Node r) {
         ch = item;
-        left = l;
-        right = r;
+        left = null;
+        right = null;
     }
     public String toString() {
         return (right == null && left == null) ? Character.toString(ch) : "(" + left.toString()+ ch + right.toString() + ")";

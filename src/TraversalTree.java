@@ -5,6 +5,8 @@ public class TraversalTree {
 
     private String postfix;
     public Node root;
+    public char rootch;
+    public Node leftNode, rightNode;
     public int sum = 0;
 
 
@@ -25,32 +27,43 @@ public class TraversalTree {
         return false;
     }
 
-    public void createExpressionTree()
+    public Node createExpressionTree()
     {
         final Stack<Node> nodes = new Stack<Node>();
+
         for (int i = 0; i < postfix.length(); i++)
         {
             char ch  = postfix.charAt(i);
 //        System.out.println(nodes);
             if (isOperator(ch))
             {
-                Node rightNode = nodes.pop();
-                Node leftNode = nodes.pop();
-                nodes.push(new Node(leftNode, ch, rightNode));
+                root = new Node(null,ch,null);
+                rightNode = nodes.pop();
+                leftNode = nodes.pop();
+                root.right = rightNode;
+                root.left = leftNode;
+
+                nodes.push(root);
             }
             else if (!Character.isWhitespace(ch))
             {
                 nodes.add(new Node(null, ch, null));
             }
         }
-        root = nodes.pop();
+        root = nodes.peek();
+        rootch = root.ch;
+        nodes.pop();
+
+        return root;
     }
 
-    public void inorder(Node n){
-        if (n == null)
-        { return; }
-        inorder(n.left);
-        inorder(n.right);
+    public String inorder(Node n){
+        if (n != null){
+            inorder(n.left);
+//System.out.print(n.ch);
+            inorder(n.right);
+        }
+        return null;
     }
 
     public void infix(Node n){
@@ -74,12 +87,9 @@ public class TraversalTree {
         return sum;
     }
 
-    private boolean isDigit(char ch)
-    {
-        return ch >= '0' && ch <= '9';
-    }
     private int toDigit(char ch)
     {
         return ch - '0';
     }
+
 }
